@@ -27,16 +27,24 @@ pub struct Struct {}
 pub struct StructField {}
 
 #[derive(Clone, Debug)]
-pub struct Enum {}
+pub struct Enum {
+    pub type_name: String,
+}
 
 #[derive(Clone, Debug)]
-pub struct EnumVariant {}
+pub struct EnumVariant {
+    pub tag_name: String,
+}
 
 #[derive(Clone, Debug)]
-pub struct Union {}
+pub struct Union {
+    pub type_name: String,
+}
 
 #[derive(Clone, Debug)]
-pub struct UnionVariant {}
+pub struct UnionVariant {
+    pub tag_name: String,
+}
 
 #[derive(Clone, Debug)]
 pub struct RpcService {}
@@ -44,20 +52,40 @@ pub struct RpcService {}
 #[derive(Clone, Debug)]
 pub struct RpcMethod {}
 
-fn reserve_module_name(path: &str, namespace_names: &mut NamespaceNames<'_, '_>) -> String {
-    let name = path.to_snake_case().into();
-    namespace_names
-        .namespace_names
-        .try_reserve_repeat("modules", name, '_')
-        .into()
-}
-
 pub fn capitalize(s: &str) -> String {
     let mut c = s.chars();
     match c.next() {
         None => String::new(),
         Some(f) => f.to_uppercase().collect::<String>() + c.as_str(),
     }
+}
+
+fn reserve_module_name(path: &str, namespace_names: &mut NamespaceNames<'_, '_>) -> String {
+    let name = capitalize(&path.to_snake_case()).into();
+    namespace_names
+        .namespace_names
+        .try_reserve_repeat("modules", name, '_')
+        .into()
+}
+
+fn reserve_type_name(path: &str, declaration_names: &mut DeclarationNames<'_, '_>) -> String {
+    let name = path.to_snake_case().into();
+    declaration_names
+        .declaration_names
+        .try_reserve_repeat("types", name, '_')
+        .into()
+}
+
+fn reserve_rust_enum_variant_name(
+    path: &str,
+    binding_kind: &'static str,
+    declaration_names: &mut DeclarationNames<'_, '_>,
+) -> String {
+    let name = capitalize(&path.to_snake_case()).into();
+    declaration_names
+        .declaration_names
+        .try_reserve_repeat(binding_kind, name, '_')
+        .into()
 }
 
 impl Backend for OCamlBackend {
@@ -73,7 +101,7 @@ impl Backend for OCamlBackend {
     type RpcServiceInfo = RpcService;
     type RpcMethodInfo = RpcMethod;
 
-    const KEYWORDS: &'static [&'static str] = &[];
+    const KEYWORDS: &'static [&'static str] = &["type"];
 
     fn generate_namespace(
         &mut self,
@@ -84,9 +112,7 @@ impl Backend for OCamlBackend {
         let name = namespace_name.0.last().map_or_else(String::new, |name| {
             reserve_module_name(name, namespace_names)
         });
-        Namespace {
-            name: capitalize(&name),
-        }
+        Namespace { name }
     }
 
     fn generate_table(
@@ -113,24 +139,30 @@ impl Backend for OCamlBackend {
 
     fn generate_enum(
         &mut self,
-        _declaration_names: &mut DeclarationNames<'_, '_>,
+        declaration_names: &mut DeclarationNames<'_, '_>,
         _translated_namespaces: &[Self::NamespaceInfo],
         _decl_id: DeclarationIndex,
-        _decl_name: &AbsolutePath,
+        decl_name: &AbsolutePath,
         _decl: &intermediate::Enum,
     ) -> Enum {
-        Enum {}
+        let decl_name = decl_name.0.last().unwrap();
+        Enum {
+            type_name: reserve_type_name(&decl_name, declaration_names),
+        }
     }
 
     fn generate_union(
         &mut self,
-        _declaration_names: &mut DeclarationNames<'_, '_>,
+        declaration_names: &mut DeclarationNames<'_, '_>,
         _translated_namespaces: &[Self::NamespaceInfo],
         _decl_id: DeclarationIndex,
-        _decl_name: &AbsolutePath,
+        decl_name: &AbsolutePath,
         _decl: &intermediate::Union,
     ) -> Union {
-        Union {}
+        let decl_name = decl_name.0.last().unwrap();
+        Union {
+            type_name: reserve_type_name(&decl_name, declaration_names),
+        }
     }
 
     fn generate_rpc_service(
@@ -170,26 +202,36 @@ impl Backend for OCamlBackend {
 
     fn generate_enum_variant(
         &mut self,
-        _translation_context: &mut DeclarationTranslationContext<'_, '_, Self>,
+        translation_context: &mut DeclarationTranslationContext<'_, '_, Self>,
         _parent_info: &Self::EnumInfo,
         _parent: &intermediate::Enum,
-        _key: &str,
+        key: &str,
         _value: &intermediate::IntegerLiteral,
     ) -> EnumVariant {
-        EnumVariant {}
+        let tag_name = reserve_rust_enum_variant_name(
+            key,
+            "enum_name",
+            &mut translation_context.declaration_names,
+        );
+        EnumVariant { tag_name }
     }
 
     fn generate_union_variant(
         &mut self,
-        _translation_context: &mut DeclarationTranslationContext<'_, '_, Self>,
+        translation_context: &mut DeclarationTranslationContext<'_, '_, Self>,
         _parent_info: &Self::UnionInfo,
         _parent: &intermediate::Union,
-        _key: &str,
+        key: &str,
         _index: u8,
         _value: &intermediate::UnionVariant,
         _resolved_type: ResolvedType<'_, Self>,
     ) -> UnionVariant {
-        UnionVariant {}
+        let tag_name = reserve_rust_enum_variant_name(
+            key,
+            "variant_name",
+            &mut translation_context.declaration_names,
+        );
+        UnionVariant { tag_name }
     }
 
     fn generate_rpc_method(

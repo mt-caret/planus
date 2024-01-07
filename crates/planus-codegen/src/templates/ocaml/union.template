@@ -1,0 +1,7 @@
+(** {%- for docstring in docstrings.iter_strings() %}
+{{ docstring }}
+{%- endfor %} *)
+type {{ info.type_name }} =
+  {% for variant in variants -%}
+  | {{ variant.tag_name }} (** {% for docstring in variant.name_and_docs.docstrings.iter_strings() %}{{ docstring }}{% endfor %} *)
+  {% endfor %}

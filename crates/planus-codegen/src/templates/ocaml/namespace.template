@@ -1,7 +1,6 @@
-(* {%- for docstring in docstrings.iter_strings() %}
+(** {%- for docstring in docstrings.iter_strings() %}
 {{ docstring }}
 {%- endfor %} *)
-
 {% if info.name.is_empty() %}
 module Root = struct
 {% else %}
@@ -11,4 +10,15 @@ module {{info.name}} = struct
         {{- Namespace(child) -}}
 
     {% endfor %}
+
+    {% for child in declarations -%}
+        {%- match child -%}
+            {%- when BackendDeclaration::Struct(inner) -%}{{- Struct(inner) }}
+            {%- when BackendDeclaration::Table(inner) -%}{{- Table(inner) }}
+            {%- when BackendDeclaration::Enum(inner) -%}{{- Enum(inner) }}
+            {%- when BackendDeclaration::Union(inner) -%}{{- Union(inner) }}
+            {%- when BackendDeclaration::RpcService(inner) -%}{{- RpcService(inner) }}
+        {% endmatch %}
+
+    {% endfor -%}
 end
