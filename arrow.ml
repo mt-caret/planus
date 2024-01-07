@@ -1,41 +1,41 @@
 (** The root namespace
 
     Generated from these locations:
-    * File `/Users/delta/dev/misc/arrow/format/File.fbs` *)
+    * File `arrow-format/File.fbs` *)
 
 module Root = struct
   (** The namespace `org`
 
       Generated from these locations:
-      * File `/Users/delta/dev/misc/arrow/format/File.fbs` *)
+      * File `arrow-format/File.fbs` *)
 
   module Org = struct
     (** The namespace `org.apache`
 
         Generated from these locations:
-        * File `/Users/delta/dev/misc/arrow/format/File.fbs` *)
+        * File `arrow-format/File.fbs` *)
 
     module Apache = struct
       (** The namespace `org.apache.arrow`
 
           Generated from these locations:
-          * File `/Users/delta/dev/misc/arrow/format/File.fbs` *)
+          * File `arrow-format/File.fbs` *)
 
       module Arrow = struct
         (** The namespace `org.apache.arrow.flatbuf`
 
             Generated from these locations:
-            * File `/Users/delta/dev/misc/arrow/format/File.fbs`
-            * File `/Users/delta/dev/misc/arrow/format/Schema.fbs`
-            * File `/Users/delta/dev/misc/arrow/format/Message.fbs`
-            * File `/Users/delta/dev/misc/arrow/format/SparseTensor.fbs`
-            * File `/Users/delta/dev/misc/arrow/format/Tensor.fbs` *)
+            * File `arrow-format/File.fbs`
+            * File `arrow-format/Schema.fbs`
+            * File `arrow-format/Message.fbs`
+            * File `arrow-format/SparseTensor.fbs`
+            * File `arrow-format/Tensor.fbs` *)
 
         module Flatbuf = struct
           (** The enum `MetadataVersion` in the namespace `org.apache.arrow.flatbuf`
 
               Generated from these locations:
-              * Enum `MetadataVersion` in the file `/Users/delta/dev/misc/arrow/format/Schema.fbs:30` *)
+              * Enum `MetadataVersion` in the file `arrow-format/Schema.fbs:30` *)
           type metadata_version =
             | V1 (** The variant `V1` in the enum `MetadataVersion` *)
             | V2 (** The variant `V2` in the enum `MetadataVersion` *)
@@ -46,7 +46,7 @@ module Root = struct
           (** The enum `Feature` in the namespace `org.apache.arrow.flatbuf`
 
               Generated from these locations:
-              * Enum `Feature` in the file `/Users/delta/dev/misc/arrow/format/Schema.fbs:70` *)
+              * Enum `Feature` in the file `arrow-format/Schema.fbs:70` *)
           type feature =
             | Unused (** The variant `UNUSED` in the enum `Feature` *)
             | Dictionary_replacement
@@ -56,7 +56,7 @@ module Root = struct
           (** The enum `UnionMode` in the namespace `org.apache.arrow.flatbuf`
 
               Generated from these locations:
-              * Enum `UnionMode` in the file `/Users/delta/dev/misc/arrow/format/Schema.fbs:147` *)
+              * Enum `UnionMode` in the file `arrow-format/Schema.fbs:147` *)
           type union_mode =
             | Sparse (** The variant `Sparse` in the enum `UnionMode` *)
             | Dense (** The variant `Dense` in the enum `UnionMode` *)
@@ -64,7 +64,7 @@ module Root = struct
           (** The enum `Precision` in the namespace `org.apache.arrow.flatbuf`
 
               Generated from these locations:
-              * Enum `Precision` in the file `/Users/delta/dev/misc/arrow/format/Schema.fbs:163` *)
+              * Enum `Precision` in the file `arrow-format/Schema.fbs:163` *)
           type precision =
             | Half (** The variant `HALF` in the enum `Precision` *)
             | Single (** The variant `SINGLE` in the enum `Precision` *)
@@ -73,7 +73,7 @@ module Root = struct
           (** The enum `DateUnit` in the namespace `org.apache.arrow.flatbuf`
 
               Generated from these locations:
-              * Enum `DateUnit` in the file `/Users/delta/dev/misc/arrow/format/Schema.fbs:240` *)
+              * Enum `DateUnit` in the file `arrow-format/Schema.fbs:240` *)
           type date_unit =
             | Day (** The variant `DAY` in the enum `DateUnit` *)
             | Millisecond (** The variant `MILLISECOND` in the enum `DateUnit` *)
@@ -81,7 +81,7 @@ module Root = struct
           (** The enum `TimeUnit` in the namespace `org.apache.arrow.flatbuf`
 
               Generated from these locations:
-              * Enum `TimeUnit` in the file `/Users/delta/dev/misc/arrow/format/Schema.fbs:255` *)
+              * Enum `TimeUnit` in the file `arrow-format/Schema.fbs:255` *)
           type time_unit =
             | Second (** The variant `SECOND` in the enum `TimeUnit` *)
             | Millisecond (** The variant `MILLISECOND` in the enum `TimeUnit` *)
@@ -91,7 +91,7 @@ module Root = struct
           (** The enum `IntervalUnit` in the namespace `org.apache.arrow.flatbuf`
 
               Generated from these locations:
-              * Enum `IntervalUnit` in the file `/Users/delta/dev/misc/arrow/format/Schema.fbs:397` *)
+              * Enum `IntervalUnit` in the file `arrow-format/Schema.fbs:397` *)
           type interval_unit =
             | Year_month (** The variant `YEAR_MONTH` in the enum `IntervalUnit` *)
             | Day_time (** The variant `DAY_TIME` in the enum `IntervalUnit` *)
@@ -101,7 +101,7 @@ module Root = struct
           (** The union `Type` in the namespace `org.apache.arrow.flatbuf`
 
               Generated from these locations:
-              * Union `Type` in the file `/Users/delta/dev/misc/arrow/format/Schema.fbs:441` *)
+              * Union `Type` in the file `arrow-format/Schema.fbs:441` *)
           type type_ =
             | Null (** The variant of type `Null` in the union `Type` *)
             | Int (** The variant of type `Int` in the union `Type` *)
@@ -138,14 +138,14 @@ module Root = struct
           (** The enum `DictionaryKind` in the namespace `org.apache.arrow.flatbuf`
 
               Generated from these locations:
-              * Enum `DictionaryKind` in the file `/Users/delta/dev/misc/arrow/format/Schema.fbs:484` *)
+              * Enum `DictionaryKind` in the file `arrow-format/Schema.fbs:484` *)
           type dictionary_kind =
             | Dense_array (** The variant `DenseArray` in the enum `DictionaryKind` *)
 
           (** The enum `Endianness` in the namespace `org.apache.arrow.flatbuf`
 
               Generated from these locations:
-              * Enum `Endianness` in the file `/Users/delta/dev/misc/arrow/format/Schema.fbs:535` *)
+              * Enum `Endianness` in the file `arrow-format/Schema.fbs:535` *)
           type endianness =
             | Little (** The variant `Little` in the enum `Endianness` *)
             | Big (** The variant `Big` in the enum `Endianness` *)
@@ -153,7 +153,7 @@ module Root = struct
           (** The enum `CompressionType` in the namespace `org.apache.arrow.flatbuf`
 
               Generated from these locations:
-              * Enum `CompressionType` in the file `/Users/delta/dev/misc/arrow/format/Message.fbs:45` *)
+              * Enum `CompressionType` in the file `arrow-format/Message.fbs:45` *)
           type compression_type =
             | Lz4_frame (** The variant `LZ4_FRAME` in the enum `CompressionType` *)
             | Zstd (** The variant `ZSTD` in the enum `CompressionType` *)
@@ -161,14 +161,14 @@ module Root = struct
           (** The enum `BodyCompressionMethod` in the namespace `org.apache.arrow.flatbuf`
 
               Generated from these locations:
-              * Enum `BodyCompressionMethod` in the file `/Users/delta/dev/misc/arrow/format/Message.fbs:58` *)
+              * Enum `BodyCompressionMethod` in the file `arrow-format/Message.fbs:58` *)
           type body_compression_method =
             | Buffer (** The variant `BUFFER` in the enum `BodyCompressionMethod` *)
 
           (** The union `MessageHeader` in the namespace `org.apache.arrow.flatbuf`
 
               Generated from these locations:
-              * Union `MessageHeader` in the file `/Users/delta/dev/misc/arrow/format/Message.fbs:146` *)
+              * Union `MessageHeader` in the file `arrow-format/Message.fbs:146` *)
           type message_header =
             | Schema (** The variant of type `Schema` in the union `MessageHeader` *)
             | Dictionary_batch
@@ -182,7 +182,7 @@ module Root = struct
           (** The enum `SparseMatrixCompressedAxis` in the namespace `org.apache.arrow.flatbuf`
 
               Generated from these locations:
-              * Enum `SparseMatrixCompressedAxis` in the file `/Users/delta/dev/misc/arrow/format/SparseTensor.fbs:77` *)
+              * Enum `SparseMatrixCompressedAxis` in the file `arrow-format/SparseTensor.fbs:77` *)
           type sparse_matrix_compressed_axis =
             | Row (** The variant `Row` in the enum `SparseMatrixCompressedAxis` *)
             | Column (** The variant `Column` in the enum `SparseMatrixCompressedAxis` *)
@@ -190,7 +190,7 @@ module Root = struct
           (** The union `SparseTensorIndex` in the namespace `org.apache.arrow.flatbuf`
 
               Generated from these locations:
-              * Union `SparseTensorIndex` in the file `/Users/delta/dev/misc/arrow/format/SparseTensor.fbs:203` *)
+              * Union `SparseTensorIndex` in the file `arrow-format/SparseTensor.fbs:203` *)
           type sparse_tensor_index =
             | Sparse_tensor_index_coo
             (** The variant of type `SparseTensorIndexCOO` in the union `SparseTensorIndex` *)

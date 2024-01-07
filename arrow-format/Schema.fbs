@@ -1,0 +1,570 @@
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements.  See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.  The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.  You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
+
+
+
+
+
+
+
+
+
+
+namespace org.apache.arrow.flatbuf;
+
+enum MetadataVersion:short {
+  
+  V1,
+
+  
+  V2,
+
+  
+  V3,
+
+  
+  V4,
+
+  
+  
+  
+  
+  
+  
+  
+  V5,
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+enum Feature : long {
+  
+  UNUSED = 0,
+  
+  
+  
+  DICTIONARY_REPLACEMENT = 1,
+  
+  
+  COMPRESSED_BODY = 2
+}
+
+
+
+table Null {
+}
+
+
+
+
+table Struct_ {
+}
+
+table List {
+}
+
+
+
+table LargeList {
+}
+
+
+
+
+table ListView {
+}
+
+
+
+table LargeListView {
+}
+
+table FixedSizeList {
+  
+  listSize: int;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+table Map {
+  
+  keysSorted: bool;
+}
+
+enum UnionMode:short { Sparse, Dense }
+
+
+
+
+
+table Union {
+  mode: UnionMode;
+  typeIds: [ int ]; // optional, describes typeid of each child.
+}
+
+table Int {
+  bitWidth: int; // restricted to 8, 16, 32, and 64 in v1
+  is_signed: bool;
+}
+
+enum Precision:short {HALF, SINGLE, DOUBLE}
+
+table FloatingPoint {
+  precision: Precision;
+}
+
+
+table Utf8 {
+}
+
+
+table Binary {
+}
+
+
+
+table LargeUtf8 {
+}
+
+
+
+table LargeBinary {
+}
+
+
+
+
+
+
+
+
+table Utf8View {
+}
+
+
+
+
+
+
+
+
+table BinaryView {
+}
+
+
+table FixedSizeBinary {
+  
+  byteWidth: int;
+}
+
+table Bool {
+}
+
+
+
+
+
+
+table RunEndEncoded {
+}
+
+
+
+
+
+table Decimal {
+  
+  precision: int;
+
+  
+  scale: int;
+
+  
+  
+  bitWidth: int = 128;
+}
+
+enum DateUnit: short {
+  DAY,
+  MILLISECOND
+}
+
+
+
+
+
+
+
+table Date {
+  unit: DateUnit = MILLISECOND;
+}
+
+enum TimeUnit: short { SECOND, MILLISECOND, MICROSECOND, NANOSECOND }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+table Time {
+  unit: TimeUnit = MILLISECOND;
+  bitWidth: int = 32;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+table Timestamp {
+  unit: TimeUnit;
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  timezone: string;
+}
+
+enum IntervalUnit: short { YEAR_MONTH, DAY_TIME, MONTH_DAY_NANO}
+// A "calendar" interval which models types that don't necessarily
+// have a precise duration without the context of a base timestamp (e.g.
+// days can differ in length during day light savings time transitions).
+// All integers in the types below are stored in the endianness indicated
+// by the schema.
+//
+// YEAR_MONTH - Indicates the number of elapsed whole months, stored as
+//   4-byte signed integers.
+// DAY_TIME - Indicates the number of elapsed days and milliseconds (no leap seconds),
+//   stored as 2 contiguous 32-bit signed integers (8-bytes in total). Support
+//   of this IntervalUnit is not required for full arrow compatibility.
+// MONTH_DAY_NANO - A triple of the number of elapsed months, days, and nanoseconds.
+//  The values are stored contiguously in 16-byte blocks. Months and days are
+//  encoded as 32-bit signed integers and nanoseconds is encoded as a 64-bit
+//  signed integer. Nanoseconds does not allow for leap seconds. Each field is
+//  independent (e.g. there is no constraint that nanoseconds have the same
+//  sign as days or that the quantity of nanoseconds represents less than a
+//  day's worth of time).
+table Interval {
+  unit: IntervalUnit;
+}
+
+// An absolute length of time unrelated to any calendar artifacts.
+//
+// For the purposes of Arrow Implementations, adding this value to a Timestamp
+// ("t1") naively (i.e. simply summing the two number) is acceptable even
+// though in some cases the resulting Timestamp (t2) would not account for
+// leap-seconds during the elapsed time between "t1" and "t2".  Similarly,
+// representing the difference between two Unix timestamp is acceptable, but
+// would yield a value that is possibly a few seconds off from the true elapsed
+// time.
+//
+//  The resolution defaults to millisecond, but can be any of the other
+//  supported TimeUnit values as with Timestamp and Time types.  This type is
+//  always represented as an 8-byte integer.
+table Duration {
+  unit: TimeUnit = MILLISECOND;
+}
+
+
+
+
+
+union Type {
+  Null,
+  Int,
+  FloatingPoint,
+  Binary,
+  Utf8,
+  Bool,
+  Decimal,
+  Date,
+  Time,
+  Timestamp,
+  Interval,
+  List,
+  Struct_,
+  Union,
+  FixedSizeBinary,
+  FixedSizeList,
+  Map,
+  Duration,
+  LargeBinary,
+  LargeUtf8,
+  LargeList,
+  RunEndEncoded,
+  BinaryView,
+  Utf8View,
+  ListView,
+  LargeListView,
+}
+
+
+
+
+
+table KeyValue {
+  key: string;
+  value: string;
+}
+
+
+
+
+
+
+enum DictionaryKind : short { DenseArray }
+table DictionaryEncoding {
+  
+  
+  
+  id: long;
+
+  
+  
+  
+  
+  
+  indexType: Int;
+
+  
+  
+  
+  
+  isOrdered: bool;
+
+  dictionaryKind: DictionaryKind;
+}
+
+
+
+
+
+table Field {
+  
+  name: string;
+
+  
+  nullable: bool;
+
+  
+  type: Type;
+
+  
+  dictionary: DictionaryEncoding;
+
+  
+  
+  children: [ Field ];
+
+  
+  custom_metadata: [ KeyValue ];
+}
+
+
+
+
+enum Endianness:short { Little, Big }
+
+
+
+struct Buffer {
+  
+  
+  offset: long;
+
+  
+  
+  
+  
+  
+  length: long;
+}
+
+
+
+
+table Schema {
+
+  
+  
+  
+  endianness: Endianness=Little;
+
+  fields: [Field];
+  // User-defined metadata
+  custom_metadata: [ KeyValue ];
+
+  
+  features : [ Feature ];
+}
+
+root_type Schema;
