@@ -1,0 +1,14 @@
+(* {%- for docstring in docstrings.iter_strings() %}
+{{ docstring }}
+{%- endfor %} *)
+
+{% if info.name.is_empty() %}
+module Root = struct
+{% else %}
+module {{info.name}} = struct
+{% endif %}
+    {%- for child in children -%}
+        {{- Namespace(child) -}}
+
+    {% endfor %}
+end

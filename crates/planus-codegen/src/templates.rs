@@ -46,6 +46,19 @@ template_module!(
 );
 
 template_module!(
+    ocaml,
+    crate::ocaml::OCamlBackend,
+    [
+        "ocaml/namespace.template",
+        "ocaml/struct.template",
+        "ocaml/table.template",
+        "ocaml/enum.template",
+        "ocaml/union.template",
+        "ocaml/rpc_service.template"
+    ]
+);
+
+template_module!(
     dot,
     crate::dot::DotBackend,
     [

@@ -9,13 +9,15 @@ use askama::Template;
 use planus_types::intermediate::Declarations;
 
 use crate::{
-    analysis::run_analysis, backend_translation::run_backend, dot::DotBackend, rust::RustBackend,
+    analysis::run_analysis, backend_translation::run_backend, dot::DotBackend, ocaml::OCamlBackend,
+    rust::RustBackend,
 };
 
 mod analysis;
 mod backend;
 mod backend_translation;
 mod dot;
+mod ocaml;
 mod rust;
 mod templates;
 
@@ -38,6 +40,12 @@ pub fn generate_rust(declarations: &Declarations) -> eyre::Result<String> {
     let res = rust::format_string(&res, Some(1_000_000))?;
     let res = rust::format_string(&res, None)?;
     Ok(res)
+}
+
+pub fn generate_ocaml(declarations: &Declarations) -> String {
+    let output = run_backend(&mut OCamlBackend {}, declarations);
+    let res = templates::ocaml::Namespace(&output).render().unwrap();
+    res
 }
 
 pub fn generate_dot(declarations: &Declarations) -> String {

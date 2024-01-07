@@ -2,6 +2,7 @@ mod check;
 mod dot;
 mod format;
 mod gen_completions;
+mod ocaml;
 mod rust;
 mod view;
 
@@ -35,6 +36,7 @@ pub struct App {
 pub enum Command {
     Dot(dot::Command),
     Rust(rust::Command),
+    Ocaml(ocaml::Command),
     View(view::Command),
     Format(format::Command),
     Check(check::Command),
@@ -49,6 +51,7 @@ impl App {
         match self.command {
             Command::Dot(command) => command.run(self.app_options),
             Command::Rust(command) => command.run(self.app_options),
+            Command::Ocaml(command) => command.run(self.app_options),
             Command::Format(command) => command.run(self.app_options),
             Command::Check(command) => command.run(self.app_options),
             Command::GenerateCompletions(command) => command.run(self.app_options),
